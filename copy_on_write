@@ -1,0 +1,49 @@
+
+Linux写时拷贝COW，提升内存分配效率，具体是基于引用计数来实现。
+
+class COWSample {
+private:
+    char *str;
+    int *refCount;
+public:
+    COWSample(const char *str=""): str(new char[strlen(str)+1]), refCount(NULL) {
+        strcpy(this.str, str);
+        refCount = new int(1);
+    }
+    
+    COWSample(const String& s): str(s.str), refCount(NULL) {
+        refCount = s.refCount;
+        (*refCount)++;
+    }
+    
+    String &operator=(const String &s) {
+        if(str != s.str) {
+            Release();
+            str = s.str;
+            refCount = s.refCount;
+            ++(*refCount):
+        }
+        return *this;
+    }
+    
+    ~COWSample() {
+        Release();
+    }
+    
+    void CopyOnWrite() {
+        if(*refCount>1) {
+            char *tmp = new char[strlen(str)+1];
+            strcpy(tmp, str);
+            --(*refCount);
+            str = tmp;
+            refCount = new int(1);
+        }
+    }
+    
+    void Release() {
+        if(--(*refCount)==0) {
+            delete [] str;
+            delete refCount;
+        }
+    }
+}
