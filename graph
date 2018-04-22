@@ -15,3 +15,9 @@ void dfs(int v, vector<int> &ans) {
     if(!visited[w->v]) dfs(w->v);
 }
 
+后面图的遍历很多是贪心算法。
+
+在遍历图时，涉及到一个生成树的概念。
+生成树是包括所有节点，以及构成这颗树的边。
+
+面试中问到了活动网activity on vertex network，当时没有套用这个概念，其实是隐式的图遍历问题。
