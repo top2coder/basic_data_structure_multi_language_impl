@@ -80,9 +80,8 @@ void split(Node *root,int k, Node *small, Node *mid, Node *big) {
         //它的左子树将会作为新small的右子树
         //它的右子树将会作为新big的左子树
         //可以发现操作对偶
-        
-        
-        //它的右子树将会作为新big的左子树
+        small->rchild = root->rchild->lchild;
+        big->lchild = root->rchild->rchild;
         split(root->rchild, root, mid, big);
     }
 }
