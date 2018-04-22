@@ -1,0 +1,16 @@
+
+这里讨论单向链表的反转。
+
+typedef struct Node Node;
+struct Node {
+    int v;
+    Node *next;
+};
+
+Node *reverse(Node *head, Node *pre) {
+    if(!head) return head;
+    Node *temp = head->next;
+    head->next = pre;
+    reverse(temp, head);
+    return head;
+}
