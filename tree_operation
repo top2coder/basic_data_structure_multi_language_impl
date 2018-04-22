@@ -50,12 +50,40 @@ Node *remove(Node *root, int v) {
     else if(v>root->v) root->rchild = remove(root->rchild, v);
     else if(root->lchild != NULL && root->rchild != NULL) {
         Node *temp = findMin(root->rchild);
-        root->rchild = remove(root->rchild, temp->v);
+        root->rchild = remove(root->rchild, temp->v); 
     } else {
         root = (root->lchild != NULL)? root->lchild:root->rchild;
     }
     return root;
 }
 
-
-
+二叉查找树的分裂
+void split(Node *root,int k, Node *small, Node *mid, Node *big) {
+    if(!root) {
+        *small = *big = 0;
+        mid->v = -1;
+        return;
+    }
+    if(k==root->v) {
+        mid = root;
+        small = root->lchild;
+        big = root->rchild;
+    } else if(k<root->v) {
+        //处理下次递归进来的一些关系，新root,即root->lchild;
+        //它的右子树将会作为新big的左子树
+        //它的左子树将会作为新small的右子树
+        big->lchild = root->lchild->rchild;
+        small->rchild = root->lchild->lchild;
+        split(root->lchild, small, mid, root);
+    } else {
+        //处理下次递归进来的一些关系，新root，即root->rchild；
+        //它的左子树将会作为新small的右子树
+        //它的右子树将会作为新big的左子树
+        //可以发现操作对偶
+        
+        
+        //它的右子树将会作为新big的左子树
+        split(root->rchild, root, mid, big);
+    }
+}
+        
