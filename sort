@@ -1,0 +1,25 @@
+
+排序，必须提到快排。递归实现快排是有必要的。
+
+void quicksort(vector<int> &arr) {
+    if(arr.empty()) return;
+    sort(arr, 0, arr.size()-1);
+}
+
+void sort(vector<int> &arr, int start, int end) {
+    if(start>=mid) return arr[start];
+    int mid = partition(arr, start, end);
+    sort(arr, start, mid);
+    sort(arr, mid+1, end);
+}
+
+int partition(vector<int> &arr, int start, int end) {
+    int i=start+1,j=end;
+    while(i<j) {
+        do i++ while(arr[i]<arr[start]);
+        do j-- while(arr[j]>arr[start]);
+        if(i<j) swap(arr[i], arr[j]);
+    }
+    if(arr[j]>arr[start]) swap(arr[j], arr[start]);
+    return j;
+}
