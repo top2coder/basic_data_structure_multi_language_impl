@@ -1,0 +1,61 @@
+
+这里探讨一下树的操作：
+树的遍历，调整，分支
+
+主要的问题在于，能否思路清晰地书写代码，属于高级考察。
+一个基本的编程原则，能用递归的，不要用循环。
+
+typedef struct Node Node;
+struct Node {
+   int v;
+   Node *lchild;
+   Node *rchild;
+   Node(int v): v(v),lchild(NULL),rchild(NULL) {};
+};
+
+void inorder(Node *root, vector<int> &ans) {
+    if(!root) return;
+    inorder(root->lchild, ans);
+    ans.emplace_back(root->v);
+    inorder(root->rchild, ans);
+}
+
+大根堆的插入和删除，大根堆是实现优先级队列的基础。其插入和删除的调整需要掌握。
+
+二叉查找树BST中，所有关键字必不重复。它的基本操作包括查找，插入，删除和分裂，还有合并。
+先看看它的查找
+Node *search(Node *root, int v) {
+    if(!root) return NULL;
+    if(v==root->v) return root;
+    if(v<root->v) return search(root->lchild, v);
+    return search(root->rchild, v);
+}
+
+再看插入，递归实现最简单
+Node *insert(Node *root, int k) {
+    if(!root) {
+        Node elem(k);
+        return &elem;
+    }
+    if(k<temp->v) return insert(root->lchild, k);
+    else return insert(root->rchild, k);
+}
+
+删除节点，如果无孩子节点，直接删，然后把父节点链域置0，
+如果有一个孩子节点，将孙子提升成儿子，然后删除儿子，
+如果有两个孩子，那么可以把左子树的最大者提拔，或者把右子树的最小者填坑
+Node *remove(Node *root, int v) {
+    if(!root) return root;
+    if(v<root->v) root->lchild = remove(root->lchild, v);
+    else if(v>root->v) root->rchild = remove(root->rchild, v);
+    else if(root->lchild != NULL && root->rchild != NULL) {
+        Node *temp = findMin(root->rchild);
+        root->rchild = remove(root->rchild, temp->v);
+    } else {
+        root = (root->lchild != NULL)? root->lchild:root->rchild;
+    }
+    return root;
+}
+
+
+
