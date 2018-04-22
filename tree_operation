@@ -86,3 +86,22 @@ void split(Node *root,int k, Node *small, Node *mid, Node *big) {
     }
 }
         
+二叉搜索树合并
+void threeWayJoin(Node *small, Node *mid, Node *big) {
+    if(!mid) return;
+    mid->lchild = small;
+    mid->rchid = big;
+    *small = *big = 0;
+}
+
+Node *twoWayJoin(Node *small, Node *big) {
+     if(!small) return big;
+     if(!big) return small;
+     mid = findMaxNode(small);
+     small = removeNode(small, mid);
+     threeWayJoin(small, mid, big);
+     return mid;
+}
+ 
+ 
+大根堆
