@@ -1,0 +1,17 @@
+
+图是二叉树基础是的扩展，可以直观理解为多颗1叉树的集合。
+
+typedef struct Node Node;
+struct Node {
+    int v;
+    vector<Node*> adjacent;
+};
+
+void dfs(int v, vector<int> &ans) {
+    Node *w;
+    visited[v] = true;
+    ans.emplace_back(v);
+    for(w=graph[v];w;w=w->link)
+    if(!visited[w->v]) dfs(w->v);
+}
+
