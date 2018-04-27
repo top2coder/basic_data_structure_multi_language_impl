@@ -5,12 +5,97 @@ typedef struct Node Node;
 struct Node {
     int v;
     Node *next;
+    Node(int val, Node *n): v(val), next(n) {}
 };
+注意括号中的结构体构造函数能简化代码编写，值得推广。
+
+void insertAfterNode(Node *root, Node *after_node, int val) {
+    Node *temp = new Node(val, NULL);
+    if(root) {
+        temp->next = after_node->next;
+        after_node->next = temp;
+    } else {
+        root = temp;
+    }
+}
+注意单向链表很重要的一个考虑是找前驱结点。
+
+void deleteNode(Node *root, Node *pre_target, Node *target) {
+    if(pre_target) pre_target->next = target->next;
+    else root = root->next;//trail is NULL, i.e. target==root
+    free(target);
+}
 
 Node *reverse(Node *head, Node *pre) {
-    if(!head) return head;
+    if(!head) return pre;
     Node *temp = head->next;
     head->next = pre;
-    reverse(temp, head);
+    return reverse(temp, head);
+}
+注意这个函数被调用之后，新的头结点返回了，新的尾结点就是原来的头节点。
+
+现在有这么一个问题，单向链表每k个反转。
+
+朴素的想法，伪代码如下：
+Node *pre=NULL;
+while head
+do
+    start = head;
+    end = head forward at most k step
+    head = end->next;
+    new_head = reverse(start, pre, end);
+    pre = start;
+done
+
+void printLinkedList(Node *root) {
+    if(!root) return;
+    Node *head = root;
+    while(head) {
+        cout << head->val << "\t";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+Node *revert(Node *head, Node *pre) {
+    if(!head) return pre;
+    Node *temp = head->next;
+    head->next = pre;
+    return revert(temp, head);
+}
+
+Node *getNextEnd(Node *root, int k) {
+    int i = 0;
+    if(!root || k <= 0) return root;
+    Node *head = root;
+    while(i<k && head->next) {
+        i++;
+        head = head->next;
+    }
     return head;
 }
+
+Node *revertK(Node *root, int k) {
+    if (k < 0 || !root) return root;
+
+    Node *start = root;
+    Node *pre = NULL;
+        Node *end = getNextEnd(start, k-1);
+    Node *temp = NULL;
+    Node *new_head = NULL;
+    Node *tail = NULL;
+    while (start) {
+        temp = end->next;
+        end->next = NULL;
+        tail = revert(start, pre);
+        if (start == root) new_head = tail;
+        pre = start;
+        start = temp;
+        end = getNextEnd(start, k-1);
+        pre->next = end;
+    }
+    return new_head;
+}
+
+这个题目不难。
+
