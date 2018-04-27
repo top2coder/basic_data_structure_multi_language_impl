@@ -38,13 +38,14 @@ Node *reverse(Node *head, Node *pre) {
 
 朴素的想法，伪代码如下：
 Node *pre=NULL;
+start = head;
+end = head forward at most k-1 step
 while head
 do
-    start = head;
-    end = head forward at most k step
-    head = end->next;
-    new_head = reverse(start, pre, end);
+    next_head = end->next;
+    new_head = reverse(start, pre);
     pre = start;
+    update all variables for next iteration
 done
 
 void printLinkedList(Node *root) {
